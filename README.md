@@ -2,22 +2,20 @@
  
 
 
-~~ LEGENDA ~~ 
-X - toèka je realizirana
-* - work in progress
+(X - toÄka je realizirana)
 
 
 X - 1. Za razvoj aplikacije koristiti Eclipse
 
-X - 2. Aplikacija mora imati izbornik na kojem su vidljive sve moguænosti aplikacije
+X - 2. Aplikacija mora imati izbornik na kojem su vidljive sve moguÄ‡nosti aplikacije
 
-X - 3. Jedna stavka izbornika otvara poveznicu u mrenom pregledniku s ERA dijagramom baze koja je na github-u
+X - 3. Jedna stavka izbornika otvara poveznicu u mreÅ¾nom pregledniku s ERA dijagramom baze koja je na github-u
 
-4. Aplikacija omoguæuje CRUD - unos, èitanje, promjenu i brisanje svih podataka u odabranoj tablici.
+4. Aplikacija omoguÄ‡uje CRUD - unos, Äitanje, promjenu i brisanje svih podataka u odabranoj tablici.
 
 X - 5. Postaviti na github kod
 
-X - 6. U readme.md napisati koje su toèke realizirane
+X - 6. U readme.md napisati koje su toÄke realizirane
 
 X - 7. U izborniku postaviti stavku koji otvara github kod
 
