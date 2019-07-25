@@ -4,10 +4,16 @@ import javax.swing.JOptionPane;
 
 import java.awt.Desktop;
 import java.net.URI;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 public class Start {
 
+	private Connection veza;
+	PreparedStatement izraz;
+	
 	public Start() {
+		
 		izlaz:
 		while(true) {
 			Desktop d = Desktop.getDesktop();
@@ -35,6 +41,8 @@ public class Start {
 				}
 				JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
 				break;
+				
+			case 3:
 			default:
 				break;
 			}
@@ -44,7 +52,15 @@ public class Start {
 	}
 	
 	private void izbornik() {
-		
+		System.out.println("################### IZBORNIK ###################");
+		System.out.println("##  1. URL ERA dijagrama		      ##");
+		System.out.println("##  2. URL GitHub koda	                      ##");
+		System.out.println("##  3. Èitanje svih podataka odabrane tablice ##");
+		System.out.println("##  4. Unos svih podataka u odabranu tablicu  ##");
+		System.out.println("##  5. Promjena podataka u odabranoj tablici  ##");
+		System.out.println("##  4. Brisanje podataka u odabranoj tablici  ##");
+		System.out.println("##  0. Izlaz				      ##");
+		System.out.println("################################################");
 	}
 
 
