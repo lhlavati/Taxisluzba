@@ -15,11 +15,11 @@ X - 3. Jedna stavka izbornika otvara poveznicu u mrežnom pregledniku s ERA dijag
 
 4. Aplikacija omoguæuje CRUD - unos, èitanje, promjenu i brisanje svih podataka u odabranoj tablici.
 
-* - 5. Postaviti na github kod
+X - 5. Postaviti na github kod
 
-* - 6. U readme.md napisati koje su toèke realizirane
+X - 6. U readme.md napisati koje su toèke realizirane
 
-7. U izborniku postaviti stavku koji otvara github kod
+X - 7. U izborniku postaviti stavku koji otvara github kod
 
 X - 8. Sav kod kucati iz 0, ne raditi copy/paste
 
