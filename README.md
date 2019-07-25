@@ -9,7 +9,7 @@ X - toèka je realizirana
 
 X - 1. Za razvoj aplikacije koristiti Eclipse
 
-* - 2. Aplikacija mora imati izbornik na kojem su vidljive sve moguænosti aplikacije
+X - 2. Aplikacija mora imati izbornik na kojem su vidljive sve moguænosti aplikacije
 
 X - 3. Jedna stavka izbornika otvara poveznicu u mrežnom pregledniku s ERA dijagramom baze koja je na github-u
 
