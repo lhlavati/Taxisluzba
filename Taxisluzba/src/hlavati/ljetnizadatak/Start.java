@@ -6,6 +6,9 @@ import java.awt.Desktop;
 import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 
 public class Start {
 
@@ -32,7 +35,7 @@ public class Start {
 				urlGit();
 				break;
 			case 3: // èitanje
-				
+				citajIzBaze();
 				break;
 			case 4: // unos
 				
@@ -51,6 +54,55 @@ public class Start {
 		
 	}
 	
+	private void citajIzBaze() {
+		System.out.println("1. vozac\n2. vozilo\n3. vozi\n4. voznja");
+		switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite redni broj tablice koju biste htjeli èitati"))) {
+			case 1:
+				ispisiTablicu("SELECT * FROM vozac");
+				JOptionPane.showMessageDialog(null, "Tablica vozac prikazana!");
+				break;
+			case 2:
+				ispisiTablicu("SELECT * FROM vozilo");
+				JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
+				break;
+			case 3:
+				ispisiTablicu("SELECT * FROM vozi");
+				JOptionPane.showMessageDialog(null, "Tablica vozi prikazana!");
+				break;
+			case 4:
+				ispisiTablicu("SELECT * FROM voznja");
+				JOptionPane.showMessageDialog(null, "Tablica voznja prikazana!");
+				break;
+			default:
+				break;
+			}
+			
+	}
+	
+	private void ispisiTablicu(String upit) {
+		
+		try {
+			izraz = veza.prepareStatement(upit);
+			ResultSet rs = izraz.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			for (int i = 1; i <= columnsNumber; i++) {
+				System.out.print(rsmd.getColumnName(i) + " | ");
+			}
+			System.out.println("");
+			while (rs.next()) {
+		        for (int i = 1; i <= columnsNumber; i++) {
+		            if (i > 1) System.out.print(" | ");
+		            System.out.print(rs.getString(i));
+		        }
+		        System.out.println("");
+		    }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	private void urlGit() {
 		
 		try {
