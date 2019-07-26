@@ -55,7 +55,8 @@ public class Start {
 	}
 	
 	private void citajIzBaze() {
-		System.out.println("1. vozac\n2. vozilo\n3. vozi\n4. voznja");
+		
+		System.out.println("1. vozac\n2. vozilo\n3. vozi\n4. voznja\n5. izlaz");
 		switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite redni broj tablice koju biste htjeli èitati"))) {
 			case 1:
 				ispisiTablicu("SELECT * FROM vozac");
@@ -72,6 +73,8 @@ public class Start {
 			case 4:
 				ispisiTablicu("SELECT * FROM voznja");
 				JOptionPane.showMessageDialog(null, "Tablica voznja prikazana!");
+				break;
+			case 5:
 				break;
 			default:
 				break;
@@ -105,12 +108,25 @@ public class Start {
 
 	private void urlGit() {
 		
+		System.out.println("1. Start.java (highly recommended)\n2. Baza.java\n3. Izlaz");
 		try {
-			d.browse(new URI("https://github.com/lhlavati/Taxisluzba/blob/master/Taxisluzba/src/hlavati/ljetnizadatak/Start.java"));
+			switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite redni broj klase koju zelite otvoriti"))) {
+			case 1:
+				d.browse(new URI("https://github.com/lhlavati/Taxisluzba/blob/master/Taxisluzba/src/hlavati/ljetnizadatak/Start.java"));
+				JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
+				break;
+			case 2:
+				d.browse(new URI("https://github.com/lhlavati/Taxisluzba/blob/master/Taxisluzba/src/hlavati/ljetnizadatak/Baza.java"));
+				JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
+				break;
+			case 3:
+				break;
+			default:
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
 		
 	}
 
