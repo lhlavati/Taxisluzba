@@ -35,3 +35,5 @@ Taxisluzba/bin/hlavati/ljetnizadatak/Baza.class
 .metadata/.plugins/org.eclipse.jdt.ui/jdt-images/5.png
 .metadata/.plugins/org.eclipse.jdt.ui/jdt-images/6.png
 .metadata/.plugins/org.eclipse.jdt.ui/jdt-images/7.png
+*.launch
+*.png
