@@ -26,7 +26,7 @@ public class Start {
 			
 			izbornik();
 			switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite redni broj stavke:"))) {
-			case 0: // IZLAZ
+			case 7: // IZLAZ
 				JOptionPane.showMessageDialog(null, "Doviðenja!");
 				break izlaz;
 			case 1: // GIT URL ERA dijagrama
@@ -57,19 +57,21 @@ public class Start {
 	
 	private void unesiUBazu() {
 		
-		System.out.println("1. vozac\n2. vozi\n3. vozilo\n4. voznja\n5. IZLAZ");
+		System.out.println("1. vozilo\n2. vozi\n3. vozac\n4. voznja\n5. IZLAZ");
 		switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite tablicu u koju biste htjeli unjeti nove podatke"))) {
 		case 1:
 			
 			try {
+				System.out.println("Tablica vozilo:");
+				ispisiTablicu("SELECT * FROM vozilo");
 				izraz = veza.prepareStatement("INSERT INTO vozilo (marka, gorivo, snaga, ABS_, godiste, brojVozila) VALUES (?, ?, ?, ?, ?, ?)");
-				izraz.setString(1, JOptionPane.showInputDialog("Unesite marku vozila"));
-				izraz.setString(2, JOptionPane.showInputDialog("Unesite vrstu goriva"));
-				izraz.setString(3, JOptionPane.showInputDialog("Unesite snagu motora (npr: '66 kW'"));
+				izraz.setString(1, KontroleZaUnos.unosString("Unesite marku vozila"));
+				izraz.setString(2, KontroleZaUnos.unosString("Unesite vrstu goriva"));
+				izraz.setString(3, KontroleZaUnos.unosString("Unesite snagu motora (npr: '66 kW'"));
 				izraz.setBoolean(4, Boolean.parseBoolean(JOptionPane.showInputDialog("Unesite ima li vaše vozilo ABS (true ili false)")));
-				izraz.setInt(5, Integer.parseInt(JOptionPane.showInputDialog("Unesite godiste vozila")));
-				izraz.setInt(6, Integer.parseInt(JOptionPane.showInputDialog("Unesite broj vozila koje želite unjeti")));
-				System.out.println("Uneseno je " + izraz.executeUpdate());
+				izraz.setInt(5, KontroleZaUnos.unosInt("Unesite godiste vozila"));
+				izraz.setInt(6, KontroleZaUnos.unosInt("Unesite broj vozila koje želite unjeti"));
+				JOptionPane.showMessageDialog(null, ("Uspješno uneseno (" + izraz.executeUpdate() + ")"));
 			    
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -83,8 +85,34 @@ public class Start {
 				ispisiTablicu("SELECT * FROM vozilo");
 				ispisiTablicu("SELECT * FROM vozac");
 				izraz = veza.prepareStatement("INSERT INTO vozi (vozilo, vozac) VALUES (?, ?)");
-				izraz.setInt(1, Integer.parseInt(JOptionPane.showInputDialog("Unesite sifru vozila")));
-				izraz.setInt(2, Integer.parseInt(JOptionPane.showInputDialog("Unesite sifru vozaca")));
+				izraz.setInt(1, KontroleZaUnos.unosInt("Unesite sifru vozila"));
+				izraz.setInt(2, KontroleZaUnos.unosInt("Unesite sifru vozaca"));
+				JOptionPane.showMessageDialog(null, ("Uspješno uneseno (" + izraz.executeUpdate() + ")"));
+			    
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			break;
+		case 3:
+			
+			try {
+				
+				ispisiTablicu("SELECT * FROM vozac");
+				izraz = veza.prepareStatement("INSERT INTO vozac (ime, prezime, oib, spol) VALUES (?, ?, ?, ?)");
+				izraz.setString(1, KontroleZaUnos.unosString("Unesite ime"));
+				izraz.setString(2, KontroleZaUnos.unosString("Unesite prezime"));
+				String oib;
+				while(true) {
+					oib = KontroleZaUnos.unosString("Unesite oib");
+					if(checkOIB(oib)) {
+						izraz.setString(3, oib);
+						break;
+					}else {
+						JOptionPane.showMessageDialog(null, "Molimo Vas unesite oib od 11 znamenaka!");
+					}
+				}
+				izraz.setString(4, provjeriSpol());
 				JOptionPane.showMessageDialog(null, ("Uspješno uneseno (" + izraz.executeUpdate() + ")"));
 			    
 			} catch (Exception e) {
@@ -97,22 +125,38 @@ public class Start {
 		}
 		
 	}
+	
+
+	private String provjeriSpol() {
+		
+		String spol;
+		while(true) {
+			spol = KontroleZaUnos.unosString("Unesite spol, M ili Z");
+			if(spol == "M" || spol == "Z") {
+				return spol;
+			}else {
+				JOptionPane.showMessageDialog(null, "Niste unjeli spol!");
+			}
+		}
+		
+	}
+	
 
 	private void citajIzBaze() {
 		
-		System.out.println("1. vozac\n2. vozilo\n3. vozi\n4. voznja\n5. IZLAZ");
+		System.out.println("1. vozilo\n2. vozi\n3. vozac\n4. voznja\n5. IZLAZ");
 		switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite redni broj tablice koju biste htjeli èitati"))) {
 			case 1:
-				ispisiTablicu("SELECT * FROM vozac");
-				JOptionPane.showMessageDialog(null, "Tablica vozac prikazana!");
-				break;
-			case 2:
 				ispisiTablicu("SELECT * FROM vozilo");
 				JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 				break;
-			case 3:
+			case 2:
 				ispisiTablicu("SELECT * FROM vozi");
 				JOptionPane.showMessageDialog(null, "Tablica vozi prikazana!");
+				break;
+			case 3:
+				ispisiTablicu("SELECT * FROM vozac");
+				JOptionPane.showMessageDialog(null, "Tablica vozac prikazana!");
 				break;
 			case 4:
 				ispisiTablicu("SELECT * FROM voznja");
@@ -125,6 +169,7 @@ public class Start {
 			}
 			
 	}
+	
 	
 	private void ispisiTablicu(String upit) {
 		
@@ -149,12 +194,13 @@ public class Start {
 		}
 		
 	}
+	
 
 	private void urlGit() {
 		
 		System.out.println("1. Start.java (highly recommended)\n2. Baza.java\n3. IZLAZ");
 		try {
-			switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite redni broj klase koju zelite otvoriti"))) {
+			switch (KontroleZaUnos.unosInt("Unesite redni broj klase koju zelite otvoriti")) {
 			case 1:
 				d.browse(new URI("https://github.com/lhlavati/Taxisluzba/blob/master/Taxisluzba/src/hlavati/ljetnizadatak/Start.java"));
 				JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
@@ -174,6 +220,7 @@ public class Start {
 		
 	}
 
+	
 	private void urlEra() {
 		
 		try {
@@ -185,6 +232,35 @@ public class Start {
 		
 	}
 	
+	
+	public boolean checkOIB(String oib) {
+
+        if (oib.length() != 11)
+            return false;
+
+        try {
+            Long.parseLong(oib);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        int a = 10;
+        for (int i = 0; i < 10; i++) {
+            a = a + Integer.parseInt(oib.substring(i, i+1));
+            a = a % 10;
+            if (a == 0)
+                a = 10;
+            a *= 2;
+            a = a % 11;
+        }
+        int kontrolni = 11 - a;
+        if (kontrolni == 10)
+            kontrolni = 0;
+
+        return kontrolni == Integer.parseInt(oib.substring(10));
+    }
+	
+	
 	private void izbornik() {
 		System.out.println("################### IZBORNIK ###################");
 		System.out.println("##  1. URL ERA dijagrama		      ##");
@@ -193,10 +269,9 @@ public class Start {
 		System.out.println("##  4. Unos svih podataka u odabranu tablicu  ##");
 		System.out.println("##  5. Promjena podataka u odabranoj tablici  ##");
 		System.out.println("##  6. Brisanje podataka u odabranoj tablici  ##");
-		System.out.println("##  0. Izlaz				      ##");
+		System.out.println("##  7. Izlaz				      ##");
 		System.out.println("################################################");
 	}
-
 
 
 	public static void main(String[] args) {
