@@ -37,3 +37,5 @@ Taxisluzba/bin/hlavati/ljetnizadatak/Baza.class
 .metadata/.plugins/org.eclipse.jdt.ui/jdt-images/7.png
 *.launch
 *.png
+/.metadata/
+Taxisluzba/bin/hlavati/ljetnizadatak/KontroleZaUnos.class
