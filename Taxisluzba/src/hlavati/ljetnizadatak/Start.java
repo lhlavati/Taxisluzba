@@ -198,7 +198,9 @@ public class Start {
 
 	private void urlGit() {
 		
-		System.out.println("1. Start.java (highly recommended)\n2. Baza.java\n3. IZLAZ");
+		System.out.println("1. Start.java (highly recommended)\n OPIS: Start klasa koja sadrži skoro sve metode, konstruktor i main\n\n"
+							+ "2. Baza.java\n OPIS: Jednostavna konekcija sa bazom\n\n3. KontroleZaUnos.java\n OPIS: Metode koje sluze"
+							+ " kao kontrola prilikom unosa i promjene u bazi\n\n4. IZLAZ");
 		try {
 			switch (KontroleZaUnos.unosInt("Unesite redni broj klase koju zelite otvoriti")) {
 			case 1:
@@ -210,6 +212,10 @@ public class Start {
 				JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
 				break;
 			case 3:
+				d.browse(new URI("https://github.com/lhlavati/Taxisluzba/blob/master/Taxisluzba/src/hlavati/ljetnizadatak/KontroleZaUnos.java"));
+				JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
+				break;
+			case 4:
 				break;
 			default:
 				break;
