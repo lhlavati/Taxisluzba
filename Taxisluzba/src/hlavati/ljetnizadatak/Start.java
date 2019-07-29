@@ -43,7 +43,7 @@ public class Start {
 				unesiUBazu();
 				break;
 			case 5: // promjena
-				
+				promjeniUBazi();
 				break;
 			case 6: // brisanje
 				brisiIzBaze();
@@ -57,6 +57,40 @@ public class Start {
 		
 	}
 	
+	private void promjeniUBazi() {
+		
+		System.out.println("1. vozilo\n2. vozi\n3. vozac\n4. voznja\n5. IZLAZ");
+		switch (KontroleZaUnos.unosInt("Unesite tablicu koju biste htjeli promjeniti")) {
+		case 1:
+			
+			try {
+				ispisiTablicu("SELECT * FROM vozilo");
+				izraz = veza.prepareStatement("UPDATE vozilo SET ? = ? WHERE sifra = ?");
+				izraz.setInt(3, KontroleZaUnos.unosInt("Unesite šifru vozila kojeg biste htjeli promjeniti"));
+				izraz.setString(1, "Unesite ime stupca kojeg biste htjeli promjeniti");
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			break;
+		case 2:
+			
+			break;
+		case 3:
+			
+			break;
+		case 4:
+	
+			break;
+		case 5:
+			break;
+		default:
+			JOptionPane.showMessageDialog(null, "Nevazeci broj!");
+			break;
+		}
+	}
+
 	private void brisiIzBaze() {
 		System.out.println("1. vozilo\n2. vozac\n3. voznja\n4. IZLAZ");
 		switch(KontroleZaUnos.unosInt("Unesite tablicu iz koje biste htjeli brisati podatke")){
@@ -116,7 +150,7 @@ public class Start {
 				izraz.setString(1, KontroleZaUnos.unosString("Unesite marku vozila"));
 				izraz.setString(2, KontroleZaUnos.unosString("Unesite vrstu goriva"));
 				izraz.setString(3, KontroleZaUnos.unosString("Unesite snagu motora (npr: '66 kW'"));
-				izraz.setBoolean(4, KontroleZaUnos.unosBoolean("Unesite ima li vaše vozilo ABS (DA ili NE)"));
+				izraz.setByte(4, KontroleZaUnos.unosByte("Unesite ima li vaše vozilo ABS (1. DA ili 0. NE"));
 				izraz.setInt(5, KontroleZaUnos.unosInt("Unesite godiste vozila"));
 				izraz.setInt(6, KontroleZaUnos.unosInt("Unesite broj vozila koje želite unjeti"));
 				JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
@@ -160,7 +194,7 @@ public class Start {
 						JOptionPane.showMessageDialog(null, "Molimo Vas unesite važeèi OIB od 11 znamenaka!");
 					}
 				}
-				izraz.setString(4, provjeriSpol());
+				izraz.setString(4, KontroleZaUnos.provjeriSpol("Unesite spol, M ili Z"));
 				JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 			    
 			} catch (Exception e) {
@@ -192,22 +226,6 @@ public class Start {
 			JOptionPane.showMessageDialog(null, "Nevazeci broj!");
 			break;
 		}
-		
-	}
-	
-
-	private String provjeriSpol() {
-		
-		String spol;
-		while(true) {
-			spol = KontroleZaUnos.unosString("Unesite spol, M ili Z");
-			if(spol != "M" || spol != "Z") {
-				JOptionPane.showMessageDialog(null, "Niste unjeli spol!");
-			}else {
-				return spol;
-			}
-		}
-		
 		
 	}
 	
