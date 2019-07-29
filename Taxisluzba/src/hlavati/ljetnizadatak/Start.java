@@ -3,6 +3,7 @@ package hlavati.ljetnizadatak;
 import javax.swing.JOptionPane;
 
 import java.awt.Desktop;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class Start {
 		while(true) {
 			
 			izbornik();
-			switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite redni broj stavke:"))) {
+			switch (KontroleZaUnos.unosInt("Unesite redni broj stavke:")) {
 			case 7: // IZLAZ
 				JOptionPane.showMessageDialog(null, "Doviðenja!");
 				break izlaz;
@@ -45,9 +46,10 @@ public class Start {
 				
 				break;
 			case 6: // brisanje
-				
+				brisiIzBaze();
 				break;
 			default:
+				JOptionPane.showMessageDialog(null, "Nevazeci broj!");
 				break;
 			}
 			
@@ -55,23 +57,69 @@ public class Start {
 		
 	}
 	
+	private void brisiIzBaze() {
+		System.out.println("1. vozilo\n2. vozac\n3. voznja\n4. IZLAZ");
+		switch(KontroleZaUnos.unosInt("Unesite tablicu iz koje biste htjeli brisati podatke")){
+			case 1:
+				
+				try {
+					ispisiTablicu("SELECT * FROM vozilo");
+					izraz = veza.prepareStatement("DELETE FROM vozilo WHERE sifra = ?");
+					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
+					JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				break;
+			case 2:
+				
+				try {
+					ispisiTablicu("SELECT * FROM vozac");
+					izraz = veza.prepareStatement("DELETE FROM vozac WHERE sifra = ?");
+					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg biste htjeli obrisati"));
+					JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				break;
+			case 3:
+				
+				try {
+					ispisiTablicu("SELECT * FROM voznja");
+					izraz = veza.prepareStatement("DELETE FROM voznja WHERE sifra = ?");
+					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
+					JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				break;
+			case 4:
+				break;
+			default:
+				JOptionPane.showMessageDialog(null, "Nevazeci broj!");
+				break;
+		}
+	}
+
 	private void unesiUBazu() {
 		
 		System.out.println("1. vozilo\n2. vozi\n3. vozac\n4. voznja\n5. IZLAZ");
-		switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite tablicu u koju biste htjeli unjeti nove podatke"))) {
+		switch (KontroleZaUnos.unosInt("Unesite tablicu u koju biste htjeli unjeti nove podatke")) {
 		case 1:
 			
 			try {
-				System.out.println("Tablica vozilo:");
+				
 				ispisiTablicu("SELECT * FROM vozilo");
 				izraz = veza.prepareStatement("INSERT INTO vozilo (marka, gorivo, snaga, ABS_, godiste, brojVozila) VALUES (?, ?, ?, ?, ?, ?)");
 				izraz.setString(1, KontroleZaUnos.unosString("Unesite marku vozila"));
 				izraz.setString(2, KontroleZaUnos.unosString("Unesite vrstu goriva"));
 				izraz.setString(3, KontroleZaUnos.unosString("Unesite snagu motora (npr: '66 kW'"));
-				izraz.setBoolean(4, Boolean.parseBoolean(JOptionPane.showInputDialog("Unesite ima li vaše vozilo ABS (true ili false)")));
+				izraz.setBoolean(4, KontroleZaUnos.unosBoolean("Unesite ima li vaše vozilo ABS (DA ili NE)"));
 				izraz.setInt(5, KontroleZaUnos.unosInt("Unesite godiste vozila"));
 				izraz.setInt(6, KontroleZaUnos.unosInt("Unesite broj vozila koje želite unjeti"));
-				JOptionPane.showMessageDialog(null, ("Uspješno uneseno (" + izraz.executeUpdate() + ")"));
+				JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 			    
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -87,7 +135,7 @@ public class Start {
 				izraz = veza.prepareStatement("INSERT INTO vozi (vozilo, vozac) VALUES (?, ?)");
 				izraz.setInt(1, KontroleZaUnos.unosInt("Unesite sifru vozila"));
 				izraz.setInt(2, KontroleZaUnos.unosInt("Unesite sifru vozaca"));
-				JOptionPane.showMessageDialog(null, ("Uspješno uneseno (" + izraz.executeUpdate() + ")"));
+				JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 			    
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -109,18 +157,39 @@ public class Start {
 						izraz.setString(3, oib);
 						break;
 					}else {
-						JOptionPane.showMessageDialog(null, "Molimo Vas unesite oib od 11 znamenaka!");
+						JOptionPane.showMessageDialog(null, "Molimo Vas unesite važeèi OIB od 11 znamenaka!");
 					}
 				}
 				izraz.setString(4, provjeriSpol());
-				JOptionPane.showMessageDialog(null, ("Uspješno uneseno (" + izraz.executeUpdate() + ")"));
+				JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 			    
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
 			break;
+		case 4:
+			
+			try {
+				
+				ispisiTablicu("SELECT * FROM voznja");
+				izraz = veza.prepareStatement("INSERT INTO voznja (cijena, adresaPolazista, adresaOdredista, brojMob, brojPutnika) "
+											+ "VALUES (?, ?, ?, ?, ?)");
+				double cijena = Double.parseDouble(JOptionPane.showInputDialog("Unesite cijenu"));
+				izraz.setBigDecimal(1, BigDecimal.valueOf(cijena));
+				izraz.setString(2, KontroleZaUnos.unosString("Unesite adresu polazista"));
+				izraz.setString(3, KontroleZaUnos.unosString("Unesite adresu odredista"));
+				System.out.println("\nPrimjer formata broja mobitela: +385913350088");
+				izraz.setString(4, KontroleZaUnos.unosString("Unesite broj mobitela"));
+				izraz.setInt(5, KontroleZaUnos.unosInt("Unesite broj putnika"));
+				JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			break;
 		default:
+			JOptionPane.showMessageDialog(null, "Nevazeci broj!");
 			break;
 		}
 		
@@ -132,12 +201,13 @@ public class Start {
 		String spol;
 		while(true) {
 			spol = KontroleZaUnos.unosString("Unesite spol, M ili Z");
-			if(spol == "M" || spol == "Z") {
-				return spol;
-			}else {
+			if(spol != "M" || spol != "Z") {
 				JOptionPane.showMessageDialog(null, "Niste unjeli spol!");
+			}else {
+				return spol;
 			}
 		}
+		
 		
 	}
 	
@@ -145,7 +215,7 @@ public class Start {
 	private void citajIzBaze() {
 		
 		System.out.println("1. vozilo\n2. vozi\n3. vozac\n4. voznja\n5. IZLAZ");
-		switch (Integer.parseInt(JOptionPane.showInputDialog("Unesite redni broj tablice koju biste htjeli èitati"))) {
+		switch (KontroleZaUnos.unosInt("Unesite redni broj tablice koju biste htjeli èitati")) {
 			case 1:
 				ispisiTablicu("SELECT * FROM vozilo");
 				JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
@@ -165,6 +235,7 @@ public class Start {
 			case 5:
 				break;
 			default:
+				JOptionPane.showMessageDialog(null, "Nevazeci broj!");
 				break;
 			}
 			
@@ -218,6 +289,7 @@ public class Start {
 			case 4:
 				break;
 			default:
+				JOptionPane.showMessageDialog(null, "Nevazeci broj!");
 				break;
 			}
 		} catch (Exception e) {
