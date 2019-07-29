@@ -14,7 +14,7 @@ public class KontroleZaUnos {
 				JOptionPane.showMessageDialog(null, "Obavezan unos");
 				continue;
 			}
-			return s;
+			return s.trim();
 		}
 
 	}
@@ -37,22 +37,50 @@ public class KontroleZaUnos {
 
 	}
 
-	public static Boolean unosBoolean(String poruka) {
-		boolean DA = true;
-		boolean NE = false;
-		boolean b;
+	public static Byte unosByte(String poruka) {
+		byte b;
 		while (true) {
 
 			try {
-				b = Boolean.parseBoolean(JOptionPane.showInputDialog(poruka));
-				if (b == DA || b == NE) {
-					return b;
+				b = Byte.parseByte(JOptionPane.showInputDialog(poruka));
+				if(b == 1 || b == 0) {
+					return b;	
+				}else {
+					JOptionPane.showMessageDialog(null, "Obavezan unos, 1. DA ili 0. NE!");
 				}
+					
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Obavezan unos");
+				JOptionPane.showMessageDialog(null, "Obavezan unos, 1. DA ili 0. NE!");
 			}
 
 		}
 	}
+
+	
+	public static String provjeriSpol(String poruka) {
+		
+		String spol;
+		char s;
+		while(true) {
+			
+			try {
+				spol = JOptionPane.showInputDialog(poruka);
+				if(spol.length() != 1) {
+					JOptionPane.showMessageDialog(null, "Obavezan unos, M ili Z!");
+					continue;
+				}
+				s = spol.charAt(0);
+				if(s == 'M' || s == 'Z') {
+					return String.valueOf(s);
+				}else {
+					JOptionPane.showMessageDialog(null, "Obavezan unos, M ili Z!");
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Obavezan unos, M ili Z!");
+			}
+	
+		}
+	}
+	
 
 }
