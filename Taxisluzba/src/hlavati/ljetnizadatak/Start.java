@@ -106,7 +106,7 @@ public class Start {
 					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
 					JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
 
 				break;
@@ -118,19 +118,25 @@ public class Start {
 					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg biste htjeli obrisati"));
 					JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
 
 				break;
 			case 3:
 
 				try {
-					ispisiTablicu("SELECT * FROM voznja");
+					ispisiTablicu(
+							"SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
+									+ "a.krajVoznje, a.brojPutnika, \r\n"
+									+ "concat(c.ime,' ', c.prezime) AS vozac, concat(d.marka, ', broj vozila ', d.brojVozila) as vozilo\r\n"
+									+ "FROM voznja a INNER JOIN vozi b ON a.vozi = b.sifra\r\n"
+									+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n"
+									+ "INNER JOIN vozilo d ON d.sifra = b.vozilo");
 					izraz = veza.prepareStatement("DELETE FROM voznja WHERE sifra = ?");
 					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
 					JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
 				} catch (Exception e) {
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
 				break;
 			case 4:
@@ -204,7 +210,7 @@ public class Start {
 					String oib;
 					while (true) {
 						oib = KontroleZaUnos.unosString("Unesite oib");
-						if (checkOIB(oib)) {
+						if (KontroleZaUnos.checkOIB(oib)) {
 							izraz.setString(3, oib);
 							break;
 						} else {
@@ -373,6 +379,7 @@ public class Start {
 			}
 		}
 	}
+	
 
 	private void urlEra() {
 
@@ -384,33 +391,7 @@ public class Start {
 		JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
 
 	}
-
-	public boolean checkOIB(String oib) {
-
-		if (oib.length() != 11)
-			return false;
-
-		try {
-			Long.parseLong(oib);
-		} catch (NumberFormatException e) {
-			return false;
-		}
-
-		int a = 10;
-		for (int i = 0; i < 10; i++) {
-			a = a + Integer.parseInt(oib.substring(i, i + 1));
-			a = a % 10;
-			if (a == 0)
-				a = 10;
-			a *= 2;
-			a = a % 11;
-		}
-		int kontrolni = 11 - a;
-		if (kontrolni == 10)
-			kontrolni = 0;
-
-		return kontrolni == Integer.parseInt(oib.substring(10));
-	}
+	
 
 	private void izbornik() {
 		System.out.println("################### IZBORNIK ###################");
