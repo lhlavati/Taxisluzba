@@ -1,5 +1,7 @@
 package hlavati.ljetnizadatak;
 
+import java.math.BigDecimal;
+
 import javax.swing.JOptionPane;
 
 public class KontroleZaUnos {
@@ -43,12 +45,12 @@ public class KontroleZaUnos {
 
 			try {
 				b = Byte.parseByte(JOptionPane.showInputDialog(poruka));
-				if(b == 1 || b == 0) {
-					return b;	
-				}else {
+				if (b == 1 || b == 0) {
+					return b;
+				} else {
 					JOptionPane.showMessageDialog(null, "Obavezan unos, 1. DA ili 0. NE!");
 				}
-					
+
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Obavezan unos, 1. DA ili 0. NE!");
 			}
@@ -56,31 +58,51 @@ public class KontroleZaUnos {
 		}
 	}
 
-	
 	public static String provjeriSpol(String poruka) {
-		
+
 		String spol;
 		char s;
-		while(true) {
-			
+		while (true) {
+
 			try {
 				spol = JOptionPane.showInputDialog(poruka);
-				if(spol.length() != 1) {
+				if (spol.length() != 1) {
 					JOptionPane.showMessageDialog(null, "Obavezan unos, M ili Z!");
 					continue;
 				}
 				s = spol.charAt(0);
-				if(s == 'M' || s == 'Z') {
+				if (s == 'M' || s == 'Z') {
 					return String.valueOf(s);
-				}else {
+				} else {
 					JOptionPane.showMessageDialog(null, "Obavezan unos, M ili Z!");
 				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Obavezan unos, M ili Z!");
 			}
-	
+
 		}
 	}
-	
+
+	public static BigDecimal unosBigDec(String poruka) {
+
+		double d;
+		while (true) {
+
+			try {
+
+				d = Double.parseDouble(JOptionPane.showInputDialog(poruka));
+				if (d <= 0) {
+					JOptionPane.showMessageDialog(null, "Broj mora biti veæi od nule");
+					continue;
+				}
+				return BigDecimal.valueOf(d);
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Obavezan unos");
+			}
+
+		}
+
+	}
 
 }
