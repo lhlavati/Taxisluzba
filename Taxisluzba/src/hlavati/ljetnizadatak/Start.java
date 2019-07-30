@@ -160,6 +160,9 @@ public class Start {
 					izraz.setInt(5, KontroleZaUnos.unosInt("Unesite godiste vozila"));
 					izraz.setInt(6, KontroleZaUnos.unosInt("Unesite broj vozila"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
+					System.out.println("");
+					ispisiTablicu("SELECT * FROM vozilo");
+					JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -171,11 +174,19 @@ public class Start {
 				try {
 
 					ispisiTablicu("SELECT * FROM vozilo");
+					System.out.println("");
 					ispisiTablicu("SELECT * FROM vozac");
 					izraz = veza.prepareStatement("INSERT INTO vozi (vozilo, vozac) VALUES (?, ?)");
 					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite sifru vozila"));
 					izraz.setInt(2, KontroleZaUnos.unosInt("Unesite sifru vozaca"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
+					System.out.println("");
+					ispisiTablicu(
+							"SELECT a.sifra, a.vrijemePocetka, a.vrijemeKraja, concat(b.ime,' ', b.prezime) AS vozac, \r\n"
+									+ "concat(c.marka, ', broj vozila ', c.brojVozila) as vozilo\r\n"
+									+ "FROM vozi a INNER JOIN vozac b ON b.sifra = a.vozac\r\n"
+									+ "INNER JOIN vozilo c ON c.sifra = a.vozilo");
+					JOptionPane.showMessageDialog(null, "Tablica vozi prikazana!");
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -202,6 +213,9 @@ public class Start {
 					}
 					izraz.setString(4, KontroleZaUnos.provjeriSpol("Unesite spol, M ili Z"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
+					System.out.println("");
+					ispisiTablicu("SELECT * FROM vozac");
+					JOptionPane.showMessageDialog(null, "Tablica vozac prikazana!");
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -212,20 +226,39 @@ public class Start {
 
 				try {
 
-					ispisiTablicu("SELECT * FROM voznja");
-					izraz = veza.prepareStatement(
+					ispisiTablicu(
+							"SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
+									+ "a.krajVoznje, a.brojPutnika, \r\n"
+									+ "concat(c.ime,' ', c.prezime) AS vozac, concat(d.marka, ', broj vozila ', d.brojVozila) as vozilo\r\n"
+									+ "FROM voznja a INNER JOIN vozi b ON a.vozi = b.sifra\r\n"
+									+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n"
+									+ "INNER JOIN vozilo d ON d.sifra = b.vozilo");
+					PreparedStatement izraz1 = veza.prepareStatement(
 							"INSERT INTO voznja (cijena, adresaPolazista, adresaOdredista, brojMob, brojPutnika, vozi) "
 									+ "VALUES (?, ?, ?, ?, ?, ?)");
-					double cijena = Double.parseDouble(JOptionPane.showInputDialog("Unesite cijenu"));
-					izraz.setBigDecimal(1, BigDecimal.valueOf(cijena));
-					izraz.setString(2, KontroleZaUnos.unosString("Unesite adresu polazista"));
-					izraz.setString(3, KontroleZaUnos.unosString("Unesite adresu odredista"));
+					izraz1.setBigDecimal(1, KontroleZaUnos.unosBigDec("Unesite cijenu"));
+					izraz1.setString(2, KontroleZaUnos.unosString("Unesite adresu polazista"));
+					izraz1.setString(3, KontroleZaUnos.unosString("Unesite adresu odredista"));
 					System.out.println("\nPrimjer formata broja mobitela: +385913350088");
-					izraz.setString(4, KontroleZaUnos.unosString("Unesite broj mobitela"));
-					izraz.setInt(5, KontroleZaUnos.unosInt("Unesite broj putnika"));
+					izraz1.setString(4, KontroleZaUnos.unosString("Unesite broj mobitela"));
+					izraz1.setInt(5, KontroleZaUnos.unosInt("Unesite broj putnika"));
+					ispisiTablicu(
+							"SELECT a.sifra, a.vrijemePocetka, a.vrijemeKraja, concat(b.ime,' ', b.prezime) AS vozac, \r\n"
+									+ "concat(c.marka, ', broj vozila ', c.brojVozila) as vozilo\r\n"
+									+ "FROM vozi a INNER JOIN vozac b ON b.sifra = a.vozac\r\n"
+									+ "INNER JOIN vozilo c ON c.sifra = a.vozilo");
+					izraz1.setInt(6, KontroleZaUnos.unosInt("Unesite sifru iz tablice vozi"));
+					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz1.executeUpdate() + ")");
+					System.out.println("");
+					ispisiTablicu(
+							"SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
+									+ "a.krajVoznje, a.brojPutnika, \r\n"
+									+ "concat(c.ime,' ', c.prezime) AS vozac, concat(d.marka, ', broj vozila ', d.brojVozila) as vozilo\r\n"
+									+ "FROM voznja a INNER JOIN vozi b ON a.vozi = b.sifra\r\n"
+									+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n"
+									+ "INNER JOIN vozilo d ON d.sifra = b.vozilo");
+					JOptionPane.showMessageDialog(null, "Tablica voznja prikazana!");
 
-					izraz.setInt(6, KontroleZaUnos.unosInt("Unesite sifru iz tablice vozi"));
-					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
