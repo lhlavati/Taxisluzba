@@ -6,7 +6,6 @@ import java.net.URI;
 
 public class Start {
 
-	
 	Desktop d = Desktop.getDesktop();
 
 	public Start() {
@@ -48,15 +47,13 @@ public class Start {
 
 	}
 
-	
-
 	private void urlGit() {
 
 		izlaz: while (true) {
-			System.out.println(
-					"\n1. Start.java (highly recommended)\n OPIS: Start klasa koja sadrži skoro sve metode, konstruktor i main\n\n"
+			System.out
+					.println("\n1. Start.java\n OPIS: Start klasa koja sadrži metodu urlGit, urlEra, izbornik, konstruktor i main\n\n"
 							+ "2. Baza.java\n OPIS: Jednostavna konekcija sa bazom\n\n3. KontroleZaUnos.java\n OPIS: Metode koje sluze"
-							+ " kao kontrola prilikom unosa i promjene u bazi\n\n4. IZLAZ\n");
+							+ " kao kontrola prilikom unosa i promjene u bazi\n\n4. Crud.java\n OPIS: CRUD baze\n\n5. IZLAZ\n");
 			try {
 				switch (KontroleZaUnos.unosInt("Unesite redni broj klase koju zelite otvoriti")) {
 				case 1:
@@ -75,6 +72,11 @@ public class Start {
 					JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
 					break;
 				case 4:
+					d.browse(new URI(
+							"https://github.com/lhlavati/Taxisluzba/blob/master/Taxisluzba/src/hlavati/ljetnizadatak/Crud.java"));
+					JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
+					break;
+				case 5:
 					break izlaz;
 				default:
 					JOptionPane.showMessageDialog(null, "Nevazeci broj!");
@@ -85,7 +87,6 @@ public class Start {
 			}
 		}
 	}
-	
 
 	private void urlEra() {
 
@@ -97,7 +98,6 @@ public class Start {
 		JOptionPane.showMessageDialog(null, "URL uspješno otvoren!");
 
 	}
-	
 
 	private void izbornik() {
 		System.out.println("################### IZBORNIK ###################");
