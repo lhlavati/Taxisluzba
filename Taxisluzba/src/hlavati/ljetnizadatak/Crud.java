@@ -15,16 +15,24 @@ public class Crud {
 	
 	public static void promjeniUBazi() {
 
+		
 		izlaz: while (true) {
 			System.out.println("\n1. vozilo\n2. vozi\n3. vozac\n4. voznja\n5. IZLAZ\n");
 			switch (KontroleZaUnos.unosInt("Unesite tablicu koju biste htjeli promjeniti")) {
 			case 1:
 
 				try {
-					ispisiTablicu("SELECT * FROM vozilo");
+					izraz = veza.prepareStatement("SELECT * FROM vozilo");
+					ResultSet rs = izraz.executeQuery();
+					ResultSetMetaData rsmd = rs.getMetaData();
 					izraz = veza.prepareStatement("UPDATE vozilo SET ? = ? WHERE sifra = ?");
+					izraz.setString(1, rsmd.getColumnName(stupciVozilo()));
+					izraz.setString(2, KontroleZaUnos.unosString("Unesite novu vrijednost"));
 					izraz.setInt(3, KontroleZaUnos.unosInt("Unesite šifru vozila kojeg biste htjeli promjeniti"));
-					izraz.setString(1, "Unesite ime stupca kojeg biste htjeli promjeniti");
+					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
+					System.out.println("");
+					ispisiTablicu("SELECT * FROM vozilo");
+					JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,6 +55,32 @@ public class Crud {
 				break;
 			}
 		}
+	}
+
+	private static int stupciVozilo() {
+		
+		izlaz: while(true) {
+			System.out.println("\n1. marka\n2. gorivo\n3. snaga\n4. ABS\n5. godiste\n6. brojVozila\n7. IZLAZ");
+			switch (KontroleZaUnos.unosInt("Unesite redni broj stupca")) {
+			case 1:
+				return 2;
+			case 2:
+				return 3;
+			case 3:
+				return 4;
+			case 4:
+				return 5;
+			case 5:
+				return 6;
+			case 6:
+				return 7;
+			case 7:
+				break izlaz;
+			default:
+				break;
+			}
+		}
+		return '0';
 	}
 
 	public static void brisiIzBaze() {
