@@ -22,7 +22,8 @@ public class Crud {
 			case 1:
 
 				try {
-					izraz = veza.prepareStatement("SELECT * FROM vozilo");
+					ispisiTablicu("SELECT * FROM vozilo");
+					JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 					ResultSet rs = izraz.executeQuery();
 					ResultSetMetaData rsmd = rs.getMetaData();
 					izraz = veza.prepareStatement("UPDATE vozilo SET ? = ? WHERE sifra = ?");
