@@ -48,7 +48,7 @@ public class KontroleZaUnos {
 				if (b == 1 || b == 0) {
 					return b;
 				} else {
-					JOptionPane.showMessageDialog(null, "Obavezan unos, 1. DA ili 0. NE!");
+					JOptionPane.showMessageDialog(null, "Obavezan unos, 1. ili 0.!");
 				}
 
 			} catch (Exception e) {
@@ -104,8 +104,7 @@ public class KontroleZaUnos {
 		}
 
 	}
-	
-	
+
 	public static boolean checkOIB(String oib) {
 
 		if (oib.length() != 11)
@@ -133,5 +132,19 @@ public class KontroleZaUnos {
 		return kontrolni == Integer.parseInt(oib.substring(10));
 	}
 
+	public static int provjeraGodista(String poruka) {
+
+		int i; 
+		while (true) {
+			i = unosInt(poruka);
+			if (String.valueOf(i).length() == 4) {
+				return i;
+			} else {
+				JOptionPane.showMessageDialog(null, "Godiste nije važeæe!");
+			}
+		}
+		
+	}
+	
 	
 }
