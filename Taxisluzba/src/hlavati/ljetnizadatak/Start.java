@@ -3,6 +3,7 @@ package hlavati.ljetnizadatak;
 import javax.swing.JOptionPane;
 import java.awt.Desktop;
 import java.net.URI;
+import java.sql.SQLException;
 
 public class Start {
 
@@ -18,6 +19,11 @@ public class Start {
 			izbornik();
 			switch (KontroleZaUnos.unosInt("Unesite redni broj stavke:")) {
 			case 7: // IZLAZ
+				try {
+					Crud.veza.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				JOptionPane.showMessageDialog(null, "Doviðenja!");
 				break izlaz;
 			case 1: // GIT URL ERA dijagrama
