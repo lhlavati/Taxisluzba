@@ -57,9 +57,10 @@ public class Start {
 
 		izlaz: while (true) {
 			System.out
-					.println("\n1. Start.java\n OPIS: Start klasa koja sadrži metodu urlGit, urlEra, izbornik, konstruktor i main\n\n"
+					.println("\n1. Start.java\n OPIS: Start klasa koja sadrži metode urlGit, urlEra, izbornik, konstruktor i main\n\n"
 							+ "2. Baza.java\n OPIS: Jednostavna konekcija sa bazom\n\n3. KontroleZaUnos.java\n OPIS: Metode koje sluze"
-							+ " kao kontrola prilikom unosa i promjene u bazi\n\n4. Crud.java\n OPIS: CRUD baze\n\n5. IZLAZ\n");
+							+ " kao kontrola prilikom unosa i promjene u bazi\n\n4. Crud.java\n OPIS: Sve metode koje su omoguæile"
+							+ " CRUD baze\n\n5. IZLAZ\n");
 			try {
 				switch (KontroleZaUnos.unosInt("Unesite redni broj klase koju zelite otvoriti")) {
 				case 1:
