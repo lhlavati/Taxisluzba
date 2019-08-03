@@ -14,31 +14,12 @@ public class Crud {
 	public static PreparedStatement izraz;
 	
 	public static void promjeniUBazi() {
-
 		
 		izlaz: while (true) {
 			System.out.println("\n1. vozilo\n2. vozi\n3. vozac\n4. voznja\n5. IZLAZ\n");
 			switch (KontroleZaUnos.unosInt("Unesite tablicu koju biste htjeli promjeniti")) {
 			case 1:
-
-				try {
-					ispisiTablicu("SELECT * FROM vozilo");
-					JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
-					ResultSet rs = izraz.executeQuery();
-					ResultSetMetaData rsmd = rs.getMetaData();
-					izraz = veza.prepareStatement("UPDATE vozilo SET ? = ? WHERE sifra = ?");
-					izraz.setString(1, rsmd.getColumnName(stupciVozilo()));
-					izraz.setString(2, KontroleZaUnos.unosString("Unesite novu vrijednost"));
-					izraz.setInt(3, KontroleZaUnos.unosInt("Unesite šifru vozila kojeg biste htjeli promjeniti"));
-					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
-					System.out.println("");
-					ispisiTablicu("SELECT * FROM vozilo");
-					JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
+				updateVozilo();
 				break;
 			case 2:
 
@@ -58,31 +39,6 @@ public class Crud {
 		}
 	}
 
-	private static int stupciVozilo() {
-		
-		izlaz: while(true) {
-			System.out.println("\n1. marka\n2. gorivo\n3. snaga\n4. ABS\n5. godiste\n6. brojVozila\n7. IZLAZ");
-			switch (KontroleZaUnos.unosInt("Unesite redni broj stupca")) {
-			case 1:
-				return 2;
-			case 2:
-				return 3;
-			case 3:
-				return 4;
-			case 4:
-				return 5;
-			case 5:
-				return 6;
-			case 6:
-				return 7;
-			case 7:
-				break izlaz;
-			default:
-				break;
-			}
-		}
-		return '0';
-	}
 
 	public static void brisiIzBaze() {
 
@@ -154,7 +110,7 @@ public class Crud {
 					izraz.setString(2, KontroleZaUnos.unosString("Unesite vrstu goriva"));
 					izraz.setString(3, KontroleZaUnos.unosString("Unesite snagu motora (npr: '66 kW'"));
 					izraz.setByte(4, KontroleZaUnos.unosByte("Unesite ima li vaše vozilo ABS (1. DA ili 0. NE"));
-					izraz.setInt(5, KontroleZaUnos.unosInt("Unesite godiste vozila"));
+					izraz.setInt(5, KontroleZaUnos.provjeraGodista("Unesite godiste vozila"));
 					izraz.setInt(6, KontroleZaUnos.unosInt("Unesite broj vozila"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 					System.out.println("");
@@ -309,8 +265,58 @@ public class Crud {
 			}
 		}
 	}
+	
+	
+	private static void updateVozilo() {
+		
+		int i;
+		try {
+			
+			ispisiTablicu("SELECT * FROM vozilo");
+			JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
+			System.out.println("");
+			i =  KontroleZaUnos.unosInt("Unesite šifru vozila kojeg biste htjeli promjeniti");
+			izraz = veza.prepareStatement("UPDATE vozilo SET marka = ? WHERE sifra = ?");
+			izraz.setInt(2, i);
+			izraz.setString(1, KontroleZaUnos.unosString("Unesite novu vrijednost marke"));
+			JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
+			
+			PreparedStatement izraz1 = veza.prepareStatement("UPDATE vozilo SET gorivo = ? WHERE sifra = ?");
+			izraz1.setInt(2, i);
+			izraz1.setString(1, KontroleZaUnos.unosString("Unesite novu vrijednost goriva"));
+			JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz1.executeUpdate() + ")");
+			
+			PreparedStatement izraz2 = veza.prepareStatement("UPDATE vozilo SET snaga = ? WHERE sifra = ?");
+			izraz2.setInt(2, i);
+			izraz2.setString(1, KontroleZaUnos.unosString("Unesite novu vrijednost snage"));
+			JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz2.executeUpdate() + ")");
+			
+			PreparedStatement izraz3 = veza.prepareStatement("UPDATE vozilo SET ABS_ = ? WHERE sifra = ?");
+			izraz3.setInt(2, i);
+			izraz3.setByte(1, KontroleZaUnos.unosByte("Unesite novu vrijednost ABS-a\n1. DA ili 0. NE"));
+			JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz3.executeUpdate() + ")");
+			
+			PreparedStatement izraz4 = veza.prepareStatement("UPDATE vozilo SET godiste = ? WHERE sifra = ?");
+			izraz4.setInt(2, i);
+			izraz4.setInt(1, KontroleZaUnos.provjeraGodista("Unesite novu vrijednost godista"));
+			JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz4.executeUpdate() + ")");
+			
+			PreparedStatement izraz5 = veza.prepareStatement("UPDATE vozilo SET brojVozila = ? WHERE sifra = ?");
+			izraz5.setInt(2, i);
+			izraz5.setInt(1, KontroleZaUnos.unosInt("Unesite novu vrijednost broja vozila"));
+			JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz5.executeUpdate() + ")");
+			
+			System.out.println("");
+			ispisiTablicu("SELECT * FROM vozilo");
+			JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 
-	public static void ispisiTablicu(String upit) {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+
+	private static void ispisiTablicu(String upit) {
 
 		try {
 			izraz = veza.prepareStatement(upit);
