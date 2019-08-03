@@ -1,6 +1,9 @@
 package hlavati.ljetnizadatak;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
@@ -134,7 +137,7 @@ public class KontroleZaUnos {
 
 	public static int provjeraGodista(String poruka) {
 
-		int i; 
+		int i;
 		while (true) {
 			i = unosInt(poruka);
 			if (String.valueOf(i).length() == 4) {
@@ -143,24 +146,53 @@ public class KontroleZaUnos {
 				JOptionPane.showMessageDialog(null, "Godiste nije važeæe!");
 			}
 		}
-		
+
 	}
-	
-	
+
 	public static String provjeraBrojaMob(String poruka) {
-		
+
 		String b;
-		while(true) {
+		while (true) {
 			b = unosString(poruka);
-			if(b.length() > 15) {
+			if (b.length() > 15) {
 				JOptionPane.showMessageDialog(null, "Ne postoji broj koji ima više od 15 znamenaka!");
 				continue;
-			}else {
+			} else {
 				return b;
 			}
-			
+
 		}
+
+	}
+
+	public static int provjeraBrojaVozila(String poruka) {
+
+		int i;
+		PreparedStatement izrazBV;
+		ResultSet rs;
+		while(true) {
+			
+			try {
+			
+				i = unosInt(poruka);
+				izrazBV = Crud.veza.prepareStatement("SELECT COUNT(*) AS broj FROM vozilo WHERE brojVozila = ?");
+				izrazBV.setInt(1, i);
+				rs = izrazBV.executeQuery();
+				rs.next();
+				if(rs.getInt("broj") == 0) {
+					return i;
+				}else {
+					JOptionPane.showMessageDialog(null, "Veæ postoji vozilo sa tim brojem!\nMolimo odaberite drugi broj");
+					continue;
+				}
+			
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return 0;
 		
+		}
 	}
 	
 	
