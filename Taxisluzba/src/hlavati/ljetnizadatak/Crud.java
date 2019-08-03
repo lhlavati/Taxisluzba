@@ -65,11 +65,11 @@ public class Crud {
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
-				
+
 				break;
-				
+
 			case 2:
-				
+
 				try {
 					ispisiTablicu(
 							"SELECT a.sifra, a.vrijemePocetka, a.vrijemeKraja, concat(b.ime,' ', b.prezime) AS vozac, \r\n"
@@ -97,9 +97,9 @@ public class Crud {
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
-				
+
 				break;
-				
+
 			case 3:
 
 				try {
@@ -121,9 +121,9 @@ public class Crud {
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
-				
+
 				break;
-				
+
 			case 4:
 
 				try {
@@ -157,9 +157,9 @@ public class Crud {
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
-				
+
 				break;
-				
+
 			case 5:
 				break izlaz;
 			default:
@@ -184,11 +184,11 @@ public class Crud {
 					izraz.setString(1, KontroleZaUnos.unosString("Unesite marku vozila"));
 					izraz.setString(2, KontroleZaUnos.unosString("Unesite vrstu goriva"));
 					izraz.setString(3, KontroleZaUnos.unosString("Unesite snagu motora (npr: '66 kW'"));
+					System.out.println("");
 					izraz.setByte(4, KontroleZaUnos.unosByte("Unesite ima li vaše vozilo ABS\n1. DA ili 0. NE"));
 					izraz.setInt(5, KontroleZaUnos.provjeraGodista("Unesite godiste vozila"));
 					izraz.setInt(6, KontroleZaUnos.provjeraBrojaVozila("Unesite broj vozila"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
-					System.out.println("");
 					ispisiTablicu("SELECT * FROM vozilo");
 					JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 
@@ -406,7 +406,6 @@ public class Crud {
 
 			System.out.println("\n\n");
 			ispisiTablicu("SELECT * FROM vozilo");
-			JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 			izraz = veza.prepareStatement("UPDATE vozi SET vozilo = ? WHERE sifra = ?");
 			izraz.setInt(2, i);
 			izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru novog vozila"));
@@ -415,7 +414,6 @@ public class Crud {
 			System.out.println("\n\n");
 
 			ispisiTablicu("SELECT * FROM vozac");
-			JOptionPane.showMessageDialog(null, "Tablica vozac prikazana!");
 			PreparedStatement izraz1 = veza.prepareStatement("UPDATE vozi SET vozac = ? WHERE sifra = ?");
 			izraz1.setInt(2, i);
 			izraz1.setInt(1, KontroleZaUnos.unosInt("Unesite šifru novog vozaca"));

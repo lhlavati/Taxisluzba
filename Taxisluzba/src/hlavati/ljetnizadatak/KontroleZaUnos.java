@@ -170,30 +170,30 @@ public class KontroleZaUnos {
 		int i;
 		PreparedStatement izrazBV;
 		ResultSet rs;
-		while(true) {
-			
+		while (true) {
+
 			try {
-			
+
 				i = unosInt(poruka);
 				izrazBV = Crud.veza.prepareStatement("SELECT COUNT(*) AS broj FROM vozilo WHERE brojVozila = ?");
 				izrazBV.setInt(1, i);
 				rs = izrazBV.executeQuery();
 				rs.next();
-				if(rs.getInt("broj") == 0) {
+				if (rs.getInt("broj") == 0) {
 					return i;
-				}else {
-					JOptionPane.showMessageDialog(null, "Veæ postoji vozilo sa tim brojem!\nMolimo odaberite drugi broj");
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Veæ postoji vozilo sa tim brojem!\nMolimo odaberite drugi broj");
 					continue;
 				}
-			
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 
 			return 0;
-		
+
 		}
 	}
-	
-	
+
 }
