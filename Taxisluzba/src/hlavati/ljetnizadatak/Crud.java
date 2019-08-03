@@ -108,9 +108,9 @@ public class Crud {
 					izraz.setString(1, KontroleZaUnos.unosString("Unesite marku vozila"));
 					izraz.setString(2, KontroleZaUnos.unosString("Unesite vrstu goriva"));
 					izraz.setString(3, KontroleZaUnos.unosString("Unesite snagu motora (npr: '66 kW'"));
-					izraz.setByte(4, KontroleZaUnos.unosByte("Unesite ima li vaše vozilo ABS \n1. DA ili 0. NE"));
+					izraz.setByte(4, KontroleZaUnos.unosByte("Unesite ima li vaše vozilo ABS\n1. DA ili 0. NE"));
 					izraz.setInt(5, KontroleZaUnos.provjeraGodista("Unesite godiste vozila"));
-					izraz.setInt(6, KontroleZaUnos.unosInt("Unesite broj vozila"));
+					izraz.setInt(6, KontroleZaUnos.provjeraBrojaVozila("Unesite broj vozila"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 					System.out.println("");
 					ispisiTablicu("SELECT * FROM vozilo");
@@ -125,11 +125,11 @@ public class Crud {
 
 				try {
 
-					ispisiTablicu("SELECT * FROM vozilo");
-					System.out.println("");
-					ispisiTablicu("SELECT * FROM vozac");
 					izraz = veza.prepareStatement("INSERT INTO vozi (vozilo, vozac) VALUES (?, ?)");
+					ispisiTablicu("SELECT * FROM vozilo");
 					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite sifru vozila"));
+					System.out.println("\n\n");
+					ispisiTablicu("SELECT * FROM vozac");
 					izraz.setInt(2, KontroleZaUnos.unosInt("Unesite sifru vozaca"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 					System.out.println("");
@@ -189,19 +189,22 @@ public class Crud {
 							"INSERT INTO voznja (cijena, adresaPolazista, adresaOdredista, brojMob, brojPutnika, vozi) "
 									+ "VALUES (?, ?, ?, ?, ?, ?)");
 					izraz.setBigDecimal(1, KontroleZaUnos.unosBigDec("Unesite cijenu"));
-					izraz.setString(2, KontroleZaUnos.unosString("Unesite adresu polazista"));
-					izraz.setString(3, KontroleZaUnos.unosString("Unesite adresu odredista"));
-					System.out.println("\nPrimjer formata broja mobitela: +385991234567\n");
-					izraz.setString(4, KontroleZaUnos.provjeraBrojaMob("Unesite broj mobitela u formatu:\n+385991234567"));
+					izraz.setString(2, KontroleZaUnos
+							.unosString("Unesite novu adresu polazista u formatu:\nAdresa i kuæni broj, Grad"));
+					izraz.setString(3, KontroleZaUnos
+							.unosString("Unesite novu adresu odredista u formatu:\nAdresa i kuæni broj, Grad"));
+					izraz.setString(4,
+							KontroleZaUnos.provjeraBrojaMob("Unesite novi broj mobitela\nHR format: +385991234567"));
 					izraz.setInt(5, KontroleZaUnos.unosInt("Unesite broj putnika"));
+					System.out.println("\n\n");
 					ispisiTablicu(
 							"SELECT a.sifra, a.vrijemePocetka, a.vrijemeKraja, concat(b.ime,' ', b.prezime) AS vozac, \r\n"
 									+ "concat(c.marka, ', broj vozila ', c.brojVozila) as vozilo\r\n"
 									+ "FROM vozi a INNER JOIN vozac b ON b.sifra = a.vozac\r\n"
 									+ "INNER JOIN vozilo c ON c.sifra = a.vozilo");
+					System.out.println("\n\n");
 					izraz.setInt(6, KontroleZaUnos.unosInt("Unesite sifru iz tablice vozi"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
-					System.out.println("");
 					ispisiTablicu(
 							"SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
 									+ "a.krajVoznje, a.brojPutnika, \r\n"
@@ -301,7 +304,7 @@ public class Crud {
 
 			PreparedStatement izraz5 = veza.prepareStatement("UPDATE vozilo SET brojVozila = ? WHERE sifra = ?");
 			izraz5.setInt(2, i);
-			izraz5.setInt(1, KontroleZaUnos.unosInt("Unesite novu vrijednost broja vozila"));
+			izraz5.setInt(1, KontroleZaUnos.provjeraBrojaVozila("Unesite novi broj vozila"));
 			JOptionPane.showMessageDialog(null, "Uspješno promjenjeno (" + izraz5.executeUpdate() + ")");
 
 			System.out.println("");
@@ -327,6 +330,7 @@ public class Crud {
 
 			i = KontroleZaUnos.unosInt("Unesite šifru vozi kojeg biste htjeli promjeniti");
 
+			System.out.println("\n\n");
 			ispisiTablicu("SELECT * FROM vozilo");
 			JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 			izraz = veza.prepareStatement("UPDATE vozi SET vozilo = ? WHERE sifra = ?");
@@ -396,6 +400,7 @@ public class Crud {
 			izraz3.setString(1, KontroleZaUnos.provjeriSpol("Unesite spol vozaca\nM ili Z"));
 			JOptionPane.showMessageDialog(null, "Uspješno promjenjeno (" + izraz3.executeUpdate() + ")");
 
+			System.out.println("\n\n");
 			ispisiTablicu("SELECT * FROM vozac");
 			JOptionPane.showMessageDialog(null, "Tablica vozi prikazana!");
 
@@ -410,13 +415,11 @@ public class Crud {
 		int i;
 		try {
 
-			ispisiTablicu(
-					"SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
-							+ "a.krajVoznje, a.brojPutnika, \r\n"
-							+ "concat(c.ime,' ', c.prezime) AS vozac, concat(d.marka, ', broj vozila ', d.brojVozila) as vozilo\r\n"
-							+ "FROM voznja a INNER JOIN vozi b ON a.vozi = b.sifra\r\n"
-							+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n"
-							+ "INNER JOIN vozilo d ON d.sifra = b.vozilo");
+			ispisiTablicu("SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
+					+ "a.krajVoznje, a.brojPutnika, \r\n"
+					+ "concat(c.ime,' ', c.prezime) AS vozac, concat(d.marka, ', broj vozila ', d.brojVozila) as vozilo\r\n"
+					+ "FROM voznja a INNER JOIN vozi b ON a.vozi = b.sifra\r\n"
+					+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n" + "INNER JOIN vozilo d ON d.sifra = b.vozilo");
 			JOptionPane.showMessageDialog(null, "Tablica voznja prikazana!");
 
 			i = KontroleZaUnos.unosInt("Unesite šifru voznje koju biste htjeli promjeniti");
@@ -427,17 +430,20 @@ public class Crud {
 
 			PreparedStatement izraz1 = veza.prepareStatement("UPDATE voznja SET adresaPolazista = ? WHERE sifra = ?");
 			izraz1.setInt(2, i);
-			izraz1.setString(1, KontroleZaUnos.unosString("Unesite novu adresu polazista u formatu:\nAdresa i kuæni broj, Grad"));
+			izraz1.setString(1,
+					KontroleZaUnos.unosString("Unesite novu adresu polazista u formatu:\nAdresa i kuæni broj, Grad"));
 			JOptionPane.showMessageDialog(null, "Uspješno promjenjeno (" + izraz1.executeUpdate() + ")");
 
 			PreparedStatement izraz2 = veza.prepareStatement("UPDATE voznja SET adresaOdredista = ? WHERE sifra = ?");
 			izraz2.setInt(2, i);
-			izraz2.setString(1, KontroleZaUnos.unosString("Unesite novu adresu odredista u formatu:\nAdresa i kuæni broj, Grad"));
+			izraz2.setString(1,
+					KontroleZaUnos.unosString("Unesite novu adresu odredista u formatu:\nAdresa i kuæni broj, Grad"));
 			JOptionPane.showMessageDialog(null, "Uspješno promjenjeno (" + izraz2.executeUpdate() + ")");
 
 			PreparedStatement izraz3 = veza.prepareStatement("UPDATE voznja SET brojMob = ? WHERE sifra = ?");
 			izraz3.setInt(2, i);
-			izraz3.setString(1, KontroleZaUnos.provjeraBrojaMob("Unesite novi broj mobitela\nHrvatski format: +385991234567"));
+			izraz3.setString(1,
+					KontroleZaUnos.provjeraBrojaMob("Unesite novi broj mobitela\nHrvatski format: +385991234567"));
 			JOptionPane.showMessageDialog(null, "Uspješno promjenjeno (" + izraz3.executeUpdate() + ")");
 
 			PreparedStatement izraz4 = veza.prepareStatement("UPDATE voznja SET brojPutnika = ? WHERE sifra = ?");
@@ -458,22 +464,19 @@ public class Crud {
 			JOptionPane.showMessageDialog(null, "Uspješno promjenjeno (" + izraz5.executeUpdate() + ")");
 
 			System.out.println("");
-			ispisiTablicu(
-					"SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
-							+ "a.krajVoznje, a.brojPutnika, \r\n"
-							+ "concat(c.ime,' ', c.prezime) AS vozac, concat(d.marka, ', broj vozila ', d.brojVozila) as vozilo\r\n"
-							+ "FROM voznja a INNER JOIN vozi b ON a.vozi = b.sifra\r\n"
-							+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n"
-							+ "INNER JOIN vozilo d ON d.sifra = b.vozilo");
+			ispisiTablicu("SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
+					+ "a.krajVoznje, a.brojPutnika, \r\n"
+					+ "concat(c.ime,' ', c.prezime) AS vozac, concat(d.marka, ', broj vozila ', d.brojVozila) as vozilo\r\n"
+					+ "FROM voznja a INNER JOIN vozi b ON a.vozi = b.sifra\r\n"
+					+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n" + "INNER JOIN vozilo d ON d.sifra = b.vozilo");
 			JOptionPane.showMessageDialog(null, "Tablica voznja prikazana!");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	
 	private static void ispisiTablicu(String upit) {
 
 		try {
@@ -493,6 +496,7 @@ public class Crud {
 				}
 				System.out.println("");
 			}
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
