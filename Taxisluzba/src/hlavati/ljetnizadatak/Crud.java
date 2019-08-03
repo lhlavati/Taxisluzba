@@ -40,35 +40,91 @@ public class Crud {
 	}
 
 	public static void brisiIzBaze() {
-
+		int obrisi;
 		izlaz: while (true) {
-			System.out.println("\n1. vozilo\n2. vozac\n3. voznja\n4. IZLAZ\n");
-			switch (KontroleZaUnos.unosInt("Unesite tablicu iz koje biste htjeli brisati podatke")) {
+			System.out.println("\n1. vozilo\n2. vozi\n3. vozac\n4. voznja\n5. IZLAZ\n");
+			izadi: switch (KontroleZaUnos.unosInt("Unesite tablicu iz koje biste htjeli brisati podatke")) {
 			case 1:
 
 				try {
 					ispisiTablicu("SELECT * FROM vozilo");
 					izraz = veza.prepareStatement("DELETE FROM vozilo WHERE sifra = ?");
-					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
-					JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+					while (true) {
+						izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
+						obrisi = JOptionPane.showConfirmDialog(null,
+								"Jeste li sigurni da želite obrisati ovaj podatak?", "Brisanje podatka",
+								JOptionPane.YES_NO_OPTION);
+						if (obrisi == 0) {
+							JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+							System.out.println("\n\n");
+							ispisiTablicu("SELECT * FROM vozilo");
+							JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
+							break izadi;
+						}
+					}
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
-
+				
 				break;
+				
 			case 2:
+				
+				try {
+					ispisiTablicu(
+							"SELECT a.sifra, a.vrijemePocetka, a.vrijemeKraja, concat(b.ime,' ', b.prezime) AS vozac, \r\n"
+									+ "concat(c.marka, ', broj vozila ', c.brojVozila) as vozilo\r\n"
+									+ "FROM vozi a INNER JOIN vozac b ON b.sifra = a.vozac\r\n"
+									+ "INNER JOIN vozilo c ON c.sifra = a.vozilo");
+					izraz = veza.prepareStatement("DELETE FROM vozi WHERE sifra = ?");
+					while (true) {
+						izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
+						obrisi = JOptionPane.showConfirmDialog(null,
+								"Jeste li sigurni da želite obrisati ovaj podatak?", "Brisanje podatka",
+								JOptionPane.YES_NO_OPTION);
+						if (obrisi == 0) {
+							JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+							System.out.println("\n\n");
+							ispisiTablicu(
+									"SELECT a.sifra, a.vrijemePocetka, a.vrijemeKraja, concat(b.ime,' ', b.prezime) AS vozac, \r\n"
+											+ "concat(c.marka, ', broj vozila ', c.brojVozila) as vozilo\r\n"
+											+ "FROM vozi a INNER JOIN vozac b ON b.sifra = a.vozac\r\n"
+											+ "INNER JOIN vozilo c ON c.sifra = a.vozilo");
+							JOptionPane.showMessageDialog(null, "Tablica vozi prikazana!");
+							break izadi;
+						}
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
+				}
+				
+				break;
+				
+			case 3:
 
 				try {
 					ispisiTablicu("SELECT * FROM vozac");
 					izraz = veza.prepareStatement("DELETE FROM vozac WHERE sifra = ?");
-					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg biste htjeli obrisati"));
-					JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+					while (true) {
+						izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
+						obrisi = JOptionPane.showConfirmDialog(null,
+								"Jeste li sigurni da želite obrisati ovaj podatak?", "Brisanje podatka",
+								JOptionPane.YES_NO_OPTION);
+						if (obrisi == 0) {
+							JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+							System.out.println("\n\n");
+							ispisiTablicu("SELECT * FROM vozac");
+							JOptionPane.showMessageDialog(null, "Tablica vozac prikazana!");
+							break izadi;
+						}
+					}
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
-
+				
 				break;
-			case 3:
+				
+			case 4:
 
 				try {
 					ispisiTablicu(
@@ -79,19 +135,39 @@ public class Crud {
 									+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n"
 									+ "INNER JOIN vozilo d ON d.sifra = b.vozilo");
 					izraz = veza.prepareStatement("DELETE FROM voznja WHERE sifra = ?");
-					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
-					JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+					while (true) {
+						izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru reda kojeg bi htjeli obrisati"));
+						obrisi = JOptionPane.showConfirmDialog(null,
+								"Jeste li sigurni da želite obrisati ovaj podatak?", "Brisanje podatka",
+								JOptionPane.YES_NO_OPTION);
+						if (obrisi == 0) {
+							JOptionPane.showMessageDialog(null, "Uspješno obrisano (" + izraz.executeUpdate() + ")");
+							System.out.println("\n\n");
+							ispisiTablicu(
+									"SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
+											+ "a.krajVoznje, a.brojPutnika, \r\n"
+											+ "concat(c.ime,' ', c.prezime) AS vozac, concat(d.marka, ', broj vozila ', d.brojVozila) as vozilo\r\n"
+											+ "FROM voznja a INNER JOIN vozi b ON a.vozi = b.sifra\r\n"
+											+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n"
+											+ "INNER JOIN vozilo d ON d.sifra = b.vozilo");
+							JOptionPane.showMessageDialog(null, "Tablica voznja prikazana!");
+							break izadi;
+						}
+					}
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "Ne možete obrisati parent row! Negdje se koristi ovaj red");
 				}
+				
 				break;
-			case 4:
+				
+			case 5:
 				break izlaz;
 			default:
 				JOptionPane.showMessageDialog(null, "Nevazeci broj!");
 				break;
 			}
 		}
+
 	}
 
 	public static void unesiUBazu() {
@@ -127,10 +203,10 @@ public class Crud {
 
 					izraz = veza.prepareStatement("INSERT INTO vozi (vozilo, vozac) VALUES (?, ?)");
 					ispisiTablicu("SELECT * FROM vozilo");
-					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite sifru vozila"));
+					izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru vozila"));
 					System.out.println("\n\n");
 					ispisiTablicu("SELECT * FROM vozac");
-					izraz.setInt(2, KontroleZaUnos.unosInt("Unesite sifru vozaca"));
+					izraz.setInt(2, KontroleZaUnos.unosInt("Unesite šifru vozaca"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 					System.out.println("");
 					ispisiTablicu(
@@ -203,7 +279,7 @@ public class Crud {
 									+ "FROM vozi a INNER JOIN vozac b ON b.sifra = a.vozac\r\n"
 									+ "INNER JOIN vozilo c ON c.sifra = a.vozilo");
 					System.out.println("\n\n");
-					izraz.setInt(6, KontroleZaUnos.unosInt("Unesite sifru iz tablice vozi"));
+					izraz.setInt(6, KontroleZaUnos.unosInt("Unesite šifru iz tablice vozi"));
 					JOptionPane.showMessageDialog(null, "Uspješno uneseno (" + izraz.executeUpdate() + ")");
 					ispisiTablicu(
 							"SELECT a.sifra, a.cijena, a.adresaPolazista, a.adresaOdredista, a.brojMob, a.pocetakVoznje, "
@@ -274,7 +350,6 @@ public class Crud {
 		try {
 
 			ispisiTablicu("SELECT * FROM vozilo");
-			JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 
 			i = KontroleZaUnos.unosInt("Unesite šifru vozila kojeg biste htjeli promjeniti");
 			izraz = veza.prepareStatement("UPDATE vozilo SET marka = ? WHERE sifra = ?");
@@ -326,7 +401,6 @@ public class Crud {
 							+ "concat(c.marka, ', broj vozila ', c.brojVozila) as vozilo\r\n"
 							+ "FROM vozi a INNER JOIN vozac b ON b.sifra = a.vozac\r\n"
 							+ "INNER JOIN vozilo c ON c.sifra = a.vozilo");
-			JOptionPane.showMessageDialog(null, "Tablica vozi prikazana!");
 
 			i = KontroleZaUnos.unosInt("Unesite šifru vozi kojeg biste htjeli promjeniti");
 
@@ -335,7 +409,7 @@ public class Crud {
 			JOptionPane.showMessageDialog(null, "Tablica vozilo prikazana!");
 			izraz = veza.prepareStatement("UPDATE vozi SET vozilo = ? WHERE sifra = ?");
 			izraz.setInt(2, i);
-			izraz.setInt(1, KontroleZaUnos.unosInt("Unesite sifru novog vozila"));
+			izraz.setInt(1, KontroleZaUnos.unosInt("Unesite šifru novog vozila"));
 			JOptionPane.showMessageDialog(null, "Uspješno promjenjeno (" + izraz.executeUpdate() + ")");
 
 			System.out.println("\n\n");
@@ -344,7 +418,7 @@ public class Crud {
 			JOptionPane.showMessageDialog(null, "Tablica vozac prikazana!");
 			PreparedStatement izraz1 = veza.prepareStatement("UPDATE vozi SET vozac = ? WHERE sifra = ?");
 			izraz1.setInt(2, i);
-			izraz1.setInt(1, KontroleZaUnos.unosInt("Unesite sifru novog vozaca"));
+			izraz1.setInt(1, KontroleZaUnos.unosInt("Unesite šifru novog vozaca"));
 			JOptionPane.showMessageDialog(null, "Uspješno promjenjeno (" + izraz1.executeUpdate() + ")");
 
 			System.out.println("");
@@ -367,7 +441,6 @@ public class Crud {
 		try {
 
 			ispisiTablicu("SELECT * FROM vozac");
-			JOptionPane.showMessageDialog(null, "Tablica vozac prikazana!");
 
 			i = KontroleZaUnos.unosInt("Unesite šifru vozaca kojeg biste htjeli promjeniti");
 
@@ -420,7 +493,6 @@ public class Crud {
 					+ "concat(c.ime,' ', c.prezime) AS vozac, concat(d.marka, ', broj vozila ', d.brojVozila) as vozilo\r\n"
 					+ "FROM voznja a INNER JOIN vozi b ON a.vozi = b.sifra\r\n"
 					+ "INNER JOIN vozac c ON c.sifra = b.vozac\r\n" + "INNER JOIN vozilo d ON d.sifra = b.vozilo");
-			JOptionPane.showMessageDialog(null, "Tablica voznja prikazana!");
 
 			i = KontroleZaUnos.unosInt("Unesite šifru voznje koju biste htjeli promjeniti");
 			izraz = veza.prepareStatement("UPDATE voznja SET cijena = ? WHERE sifra = ?");
