@@ -52,7 +52,7 @@ public class KontroleZaUnos {
 				}
 
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Obavezan unos, 1. DA ili 0. NE!");
+				JOptionPane.showMessageDialog(null, "Obavezan unos, 1. ili 0.!");
 			}
 
 		}
@@ -142,6 +142,23 @@ public class KontroleZaUnos {
 			} else {
 				JOptionPane.showMessageDialog(null, "Godiste nije važeæe!");
 			}
+		}
+		
+	}
+	
+	
+	public static String provjeraBrojaMob(String poruka) {
+		
+		String b;
+		while(true) {
+			b = unosString(poruka);
+			if(b.length() > 15) {
+				JOptionPane.showMessageDialog(null, "Ne postoji broj koji ima više od 15 znamenaka!");
+				continue;
+			}else {
+				return b;
+			}
+			
 		}
 		
 	}
