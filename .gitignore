@@ -55,3 +55,6 @@ Taxisluzba/bin/hlavati/ljetnizadatak/Crud.class
 Taxisluzba/bin/hlavati/ljetnizadatak/Crud.class
 *.class
 Taxisluzba/bin/hlavati/ljetnizadatak/Crud.class
+/Taxisluzba/nbproject/private/
+*.properties
+*.mf
