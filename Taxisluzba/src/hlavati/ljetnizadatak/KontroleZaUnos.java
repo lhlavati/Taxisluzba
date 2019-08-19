@@ -9,6 +9,10 @@ import javax.swing.JOptionPane;
 
 public class KontroleZaUnos {
 
+	public static PreparedStatement izrazS;
+	public static ResultSet rs;
+	public static int i;
+
 	public static String unosString(String poruka) {
 
 		String s;
@@ -26,7 +30,6 @@ public class KontroleZaUnos {
 
 	public static int unosInt(String poruka) {
 
-		int i;
 		while (true) {
 			try {
 				i = Integer.parseInt(JOptionPane.showInputDialog(poruka));
@@ -137,7 +140,6 @@ public class KontroleZaUnos {
 
 	public static int provjeraGodista(String poruka) {
 
-		int i;
 		while (true) {
 			i = unosInt(poruka);
 			if (String.valueOf(i).length() == 4) {
@@ -167,7 +169,6 @@ public class KontroleZaUnos {
 
 	public static int provjeraBrojaVozila(String poruka) {
 
-		int i;
 		PreparedStatement izrazBV;
 		ResultSet rs;
 		while (true) {
@@ -194,6 +195,118 @@ public class KontroleZaUnos {
 			return 0;
 
 		}
+	}
+
+	public static int unosSifreVozilo(String poruka) {
+
+		while (true) {
+
+			try {
+
+				i = unosInt(poruka);
+				izrazS = Crud.veza.prepareStatement("SELECT count(*) AS broj FROM vozilo WHERE sifra = ?");
+				izrazS.setInt(1, i);
+				rs = izrazS.executeQuery();
+				rs.next();
+				if (rs.getInt("broj") != 0) {
+					return i;
+				} else {
+					JOptionPane.showMessageDialog(null, "Pogrešan unos!\nMolimo odaberite vazecu sifru vozila!");
+					continue;
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return 0;
+
+		}
+
+	}
+
+	public static int unosSifreVozi(String poruka) {
+
+		while (true) {
+
+			try {
+
+				i = unosInt(poruka);
+				izrazS = Crud.veza.prepareStatement("SELECT count(*) AS broj FROM vozi WHERE sifra = ?");
+				izrazS.setInt(1, i);
+				rs = izrazS.executeQuery();
+				rs.next();
+				if (rs.getInt("broj") != 0) {
+					return i;
+				} else {
+					JOptionPane.showMessageDialog(null, "Pogrešan unos!\nMolimo odaberite vazecu sifru vozi!");
+					continue;
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return 0;
+
+		}
+
+	}
+
+	public static int unosSifreVozac(String poruka) {
+
+		while (true) {
+
+			try {
+
+				i = unosInt(poruka);
+				izrazS = Crud.veza.prepareStatement("SELECT count(*) AS broj FROM vozac WHERE sifra = ?");
+				izrazS.setInt(1, i);
+				rs = izrazS.executeQuery();
+				rs.next();
+				if (rs.getInt("broj") != 0) {
+					return i;
+				} else {
+					JOptionPane.showMessageDialog(null, "Pogrešan unos!\nMolimo odaberite vazecu sifru vozaca!");
+					continue;
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return 0;
+
+		}
+
+	}
+	
+	public static int unosSifreVoznja(String poruka) {
+
+		while (true) {
+
+			try {
+
+				i = unosInt(poruka);
+				izrazS = Crud.veza.prepareStatement("SELECT count(*) AS broj FROM voznja WHERE sifra = ?");
+				izrazS.setInt(1, i);
+				rs = izrazS.executeQuery();
+				rs.next();
+				if (rs.getInt("broj") != 0) {
+					return i;
+				} else {
+					JOptionPane.showMessageDialog(null, "Pogrešan unos!\nMolimo odaberite vazecu sifru voznje!");
+					continue;
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			return 0;
+
+		}
+
 	}
 
 }
